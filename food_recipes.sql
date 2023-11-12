@@ -1,7 +1,7 @@
 CREATE TABLE recipes (
   recipe_id INT AUTO_INCREMENT PRIMARY KEY,
-  name TEXT,
-  category TEXT
+  name VARCHAR(22),
+  category VARCHAR(22)
 );
 
 INSERT INTO recipes (name, category) VALUES 
@@ -12,7 +12,7 @@ INSERT INTO recipes (name, category) VALUES
 
 CREATE TABLE ingredients (
   ingredient_id INT AUTO_INCREMENT PRIMARY KEY,
-  ingredient_name TEXT
+  ingredient_name VARCHAR(22)
 );
 
 INSERT INTO ingredients (ingredient_name) VALUES
@@ -21,7 +21,7 @@ INSERT INTO ingredients (ingredient_name) VALUES
 
 CREATE TABLE steps (
   step_id INT AUTO_INCREMENT PRIMARY KEY, 
-  step_description TEXT
+  step_description VARCHAR(22)
 );
 
 INSERT INTO steps (step_description) VALUES
