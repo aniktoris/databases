@@ -1,5 +1,5 @@
 CREATE TABLE Recipes (
-  recipe_id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   recipe_name VARCHAR(22)
 );
 
@@ -10,7 +10,7 @@ INSERT INTO Recipes (recipe_name) VALUES
         ('Tamagoyaki Japanese Omelette');
 
 CREATE TABLE Categories(
-  category_id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   category_name VARCHAR(50)
 );
 
@@ -19,7 +19,7 @@ INSERT INTO Categories (category_name) VALUES
   ('Vegan'), ('Gluten-Free'), ('Japanese');
 
 CREATE TABLE Ingredients (
-  ingredient_id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   ingredient_name VARCHAR(28)
 );
 
@@ -33,8 +33,8 @@ CREATE TABLE RecipeCategory(
   recipe_id INT,
   category_id INT,
   PRIMARY KEY (recipe_id, category_id),
-  FOREIGN KEY (recipe_id) REFERENCES Recipes(recipe_id),
-  FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+  FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
+  FOREIGN KEY (category_id) REFERENCES Categories(id)
 );
 
 INSERT INTO RecipeCategory (recipe_id, category_id) VALUES 
@@ -48,7 +48,7 @@ INSERT INTO RecipeCategory (recipe_id, category_id) VALUES
   (4, 6);
 
 CREATE TABLE Steps (
-  step_id INT AUTO_INCREMENT PRIMARY KEY, 
+  id INT AUTO_INCREMENT PRIMARY KEY, 
   step_description TEXT
 );
 
@@ -86,8 +86,8 @@ CREATE TABLE RecipeSteps (
   step_id INT,
   step_order INT,
   PRIMARY KEY (recipe_id, step_id),
-  FOREIGN KEY (recipe_id) REFERENCES Recipes(recipe_id),
-  FOREIGN KEY (step_id) REFERENCES Steps(step_id)
+  FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
+  FOREIGN KEY (step_id) REFERENCES Steps(id)
 );
 
 INSERT INTO RecipeSteps (recipe_id, step_id, step_order) VALUES
@@ -126,8 +126,8 @@ CREATE TABLE RecipeIngredients (
   recipe_id INT,
   ingredient_id INT,
   PRIMARY KEY (recipe_id, ingredient_id),
-  FOREIGN KEY (recipe_id) REFERENCES Recipes(recipe_id),
-  FOREIGN KEY (ingredient_id) REFERENCES Ingredients(ingredient_id)
+  FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
+  FOREIGN KEY (ingredient_id) REFERENCES Ingredients(id)
 );
 
 INSERT INTO RecipeIngredients (recipe_id, ingredient_id) VALUES

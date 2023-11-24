@@ -16,8 +16,8 @@ connection.connect((err) => {
   USE recipes;
   
   CREATE TABLE Recipes (
-    recipe_id INT AUTO_INCREMENT PRIMARY KEY,
-    recipe_name VARCHAR(50)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    recipe_name VARCHAR(28)
   );
   
   INSERT INTO Recipes (recipe_name) VALUES 
@@ -27,30 +27,31 @@ connection.connect((err) => {
           ('Tamagoyaki Japanese Omelette');
   
   CREATE TABLE Categories(
-    category_id INT AUTO_INCREMENT PRIMARY KEY,
-    category_name VARCHAR(22)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(50)
   );
   
-  INSERT INTO Categories (category_name) 
-  VALUES ('Cake'), ('No-Bake'), ('Vegetarian'), ('Vegan'), ('Gluten-Free'), ('Japanese');
+  INSERT INTO Categories (category_name) VALUES 
+    ('Cake'), ('No-Bake'), ('Vegetarian'),
+    ('Vegan'), ('Gluten-Free'), ('Japanese');
   
   CREATE TABLE Ingredients (
-    ingredient_id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     ingredient_name VARCHAR(28)
   );
   
   INSERT INTO Ingredients (ingredient_name) VALUES
   ('Condensed milk'), ('Cream Cheese'), ('Lemon Juice'), ('Pie Crust'), ('Cherry Jam'), 
   ('Brussels Sprouts'), ('Sesame seeds'), ('Pepper'), ('Salt'), ('Olive oil'),
-  ('Macaroni'), ('Butter'),('Flour'), ('Milk'), ('Shredded Cheddar cheese'),
+  ('Macaroni'), ('Butter'), ('Flour'), ('Milk'), ('Shredded Cheddar cheese'),
   ('Eggs'), ('Soy sauce'), ('Sugar');
   
   CREATE TABLE RecipeCategory(
     recipe_id INT,
     category_id INT,
     PRIMARY KEY (recipe_id, category_id),
-    FOREIGN KEY (recipe_id) REFERENCES Recipes(recipe_id),
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+    FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
+    FOREIGN KEY (category_id) REFERENCES Categories(id)
   );
   
   INSERT INTO RecipeCategory (recipe_id, category_id) VALUES 
@@ -64,7 +65,7 @@ connection.connect((err) => {
     (4, 6);
   
   CREATE TABLE Steps (
-    step_id INT AUTO_INCREMENT PRIMARY KEY, 
+    id INT AUTO_INCREMENT PRIMARY KEY, 
     step_description TEXT
   );
   
@@ -102,8 +103,8 @@ connection.connect((err) => {
     step_id INT,
     step_order INT,
     PRIMARY KEY (recipe_id, step_order),
-    FOREIGN KEY (recipe_id) REFERENCES Recipes(recipe_id),
-    FOREIGN KEY (step_id) REFERENCES Steps(step_id)
+    FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
+    FOREIGN KEY (step_id) REFERENCES Steps(id)
   );
   
   INSERT INTO RecipeSteps (recipe_id, step_id, step_order) VALUES
@@ -142,8 +143,8 @@ connection.connect((err) => {
     recipe_id INT,
     ingredient_id INT,
     PRIMARY KEY (recipe_id, ingredient_id),
-    FOREIGN KEY (recipe_id) REFERENCES Recipes(recipe_id),
-    FOREIGN KEY (ingredient_id) REFERENCES Ingredients(ingredient_id)
+    FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
+    FOREIGN KEY (ingredient_id) REFERENCES Ingredients(id)
   );
   
   INSERT INTO RecipeIngredients (recipe_id, ingredient_id) VALUES
@@ -173,25 +174,27 @@ connection.connect((err) => {
     (4, 18),
     (4, 9),
     (4, 10);
-
-    SELECT Recipes.recipe_name, Categories.category_name
+    
+    SELECT recipes.recipe_name, categories.category_name, steps.step_description
     FROM Recipes
-    JOIN RecipeCategory ON Recipes.recipe_id = RecipeCategory.recipe_id
-    JOIN Categories ON RecipeCategory.category_id = Categories.category_id
-    JOIN RecipeIngredients ON Recipes.recipe_id = RecipeIngredients.recipe_id
-    JOIN Ingredients ON RecipeIngredients.ingredient_id = Ingredients.ingredient_id
-    WHERE Categories.category_name = 'Vegetarian' AND Ingredients.ingredient_name LIKE '%cheese'; 
-
+    JOIN RecipeCategory ON Recipes.id = RecipeCategory.recipe_id
+    JOIN Categories ON RecipeCategory.category_id = Categories.id
+    JOIN RecipeIngredients ON Recipes.id = RecipeIngredients.recipe_id
+    JOIN Ingredients ON RecipeIngredients.ingredient_id = Ingredients.id
+    JOIN RecipeSteps ON Recipes.id = RecipeSteps.recipe_id
+    JOIN Steps ON RecipeSteps.step_id = Steps.id
+    WHERE categories.category_name = 'Vegetarian' AND Ingredients.ingredient_name LIKE '%cheese'; 
+    
     SELECT recipes.recipe_name, categories.category_name
     FROM recipes
-    JOIN RecipeCategory ON recipes.recipe_id = RecipeCategory.recipe_id
-    JOIN Categories ON RecipeCategory.category_id = Categories.category_id
+    JOIN RecipeCategory ON Recipes.id = RecipeCategory.recipe_id
+    JOIN Categories ON RecipeCategory.category_id = Categories.id
     WHERE categories.category_name IN ('No-Bake', 'Cake');
-
+    
     SELECT recipes.recipe_name, categories.category_name
     FROM recipes
-    JOIN RecipeCategory ON recipes.recipe_id = RecipeCategory.recipe_id
-    JOIN Categories ON RecipeCategory.category_id = Categories.category_id
+    JOIN RecipeCategory ON Recipes.id = RecipeCategory.recipe_id
+    JOIN Categories ON RecipeCategory.category_id = Categories.id
     WHERE categories.category_name = 'Vegan' OR categories.category_name = 'Japanese';
    `;
 
